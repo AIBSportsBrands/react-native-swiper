@@ -193,24 +193,6 @@ export default class extends Component {
   autoplayTimer = null
   loopJumpTimer = null
 
-  componentWillMount () {
-    if (Platform.OS !== 'ios') {
-      const shouldSetResponder = (evt, gestureState) => this.props.horizontal
-        && (Math.abs(gestureState.vx) > Math.abs(gestureState.vy));
-      this._panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: shouldSetResponder,
-        onStartShouldSetPanResponderCapture: shouldSetResponder,
-        onMoveShouldSetPanResponder: shouldSetResponder,
-        onMoveShouldSetPanResponderCapture: shouldSetResponder,
-        onPanResponderRelease: () => false,
-        onPanResponderTerminate: () => false,
-        // blocking nativeResponder makes it hard to scroll ViewPagerAndroid in a ScrollView
-        // I don't know how it works since I know little about java, but it did work in my case
-        onShouldBlockNativeResponder: () => false,
-      })
-    }
-  }
-
   componentWillReceiveProps (nextProps) {
     if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
     this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
